@@ -2,12 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 const app = express();
-const Task = mongoose.model('Task', taskSchema);
-const taskSchema = new mongoose.Schema({
-  title: String,
-  completed: Boolean,
-});
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -15,6 +11,13 @@ mongoose.connect('mongodb://mongo:27017/tasks', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+const taskSchema = new mongoose.Schema({
+  title: String,
+  completed: Boolean,
+});
+
+const Task = mongoose.model('Task', taskSchema);
 
 app.get('/tasks', async (req, res) => {
   const tasks = await Task.find();
